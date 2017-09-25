@@ -3,7 +3,7 @@ import os
 import numpy as np
 import pandas as pd
 from celery import Celery, states
-from flask import Flask, jsonify, request, make_response
+from flask import Flask, jsonify, request, make_response, render_template
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -24,6 +24,11 @@ if not os.path.exists(UPLOADS):
         os.mkdir(UPLOADS)
     except (Exception,):
         pass
+
+
+@app.route('/', methods=['GET'])
+def index():
+    return render_template('index.html')
 
 
 @app.route('/upload', methods=['POST'])
@@ -85,6 +90,7 @@ def get_column_data(df):
         info['name'] = c
         info['num_null'] = col.isnull().sum()
 
+        # print(f'col.dtypes: {col.dtypes}')
         if col.dtypes == 'int64':
             info['mean'] = np.mean(col)
             info['median'] = np.median(col)
@@ -94,6 +100,7 @@ def get_column_data(df):
         else:
             unique_values = col.unique().tolist()
             print(len(unique_values), len(df))
+
             if len(unique_values) < len(df):
                 info['unique_values'] = unique_values
             else:

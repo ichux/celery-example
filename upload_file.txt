@@ -1,0 +1,8 @@
+curl -X POST \
+  http://localhost:8889/upload \
+  -H 'accept: */*' \
+  -H 'accept-encoding: gzip, deflate' \
+  -H 'connection: keep-alive' \
+  -H 'content-type: multipart/form-data; boundary=----DataBoundary' \
+  -H 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:46.0) Gecko/20100101 Firefox/46.0' \
+  -F file=@/Users/ichux/PycharmProjects/gcore/Feb-2017.csv
