@@ -1,3 +1,5 @@
 /venv
 /uploads
 *.py[cod]
+.idea/
+.DS_Store

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Celery Example</title>
+  <title>Celery Uploads</title>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 </head>
 <body>
@@ -28,8 +28,8 @@
       e.preventDefault();
       
       var data = new FormData();
-      var input = document.querySelector('input[type="file"]')
-      data.append('file', input.files[0])
+      var input = document.querySelector('input[type="file"]');
+      data.append('file', input.files[0]);
       
       window.fetch('http://localhost:8889/upload', {
           method: 'POST',
@@ -44,15 +44,13 @@
   }
 
   function checkTask(taskId) {
-    console.log('Checking Celery task')
+    console.log('Checking Celery task');
     window.fetch('http://localhost:8889/task/' + taskId 
     ).then(function(response) {
         return response.json()
     }).then(function(data) {
         if(data.state === 'PENDING') {
-          setTimeout(function() {
-            checkTask(taskId)
-          }, 1000)
+          setTimeout(function() {checkTask(taskId)}, 1000)
         } else if(data.state === 'FAILURE') {
           alert('Failure occurred')
         } else if(data.state === 'SUCCESS') {
