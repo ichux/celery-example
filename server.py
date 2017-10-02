@@ -26,6 +26,12 @@ if not os.path.exists(UPLOADS):
         pass
 
 
+@celery.task(bind=True)
+def read_csv_task(self, path):
+    self.update_state(state=states.PENDING)
+    return compute_properties(pd.read_csv(path))
+
+
 @app.route('/', methods=['GET'])
 def index():
     return render_template('index.html')
@@ -65,15 +71,6 @@ def check_task_status(task_id):
             response['error'] = str(e)
 
     return make_response(jsonify(response))
-
-
-@celery.task(bind=True)
-def read_csv_task(self, path):
-    self.update_state(state=states.PENDING)
-
-    df = pd.read_csv(path)
-    result = compute_properties(df)
-    return result
 
 
 def compute_properties(df):
